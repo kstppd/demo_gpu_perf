@@ -1,3 +1,5 @@
 *json
 external/
 bench*
+*png
+.cache
