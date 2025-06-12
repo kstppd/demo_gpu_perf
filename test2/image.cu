@@ -83,31 +83,6 @@ generate_fourier_features(NumericMatrix::HostMatrix<T> &input,
   return output;
 }
 
-double calculate_mse(const unsigned char *original,
-                     const unsigned char *reconstructed, int width,
-                     int height) {
-  double mse = 0.0;
-  int num_pixels = width * height;
-  for (int i = 0; i < num_pixels; i++) {
-    int diff = original[i] - reconstructed[i];
-    mse += diff * diff;
-  }
-  mse /= num_pixels;
-  return mse;
-}
-
-double calculate_psnr(const unsigned char *original,
-                      const unsigned char *reconstructed, int width,
-                      int height) {
-  double mse = calculate_mse(original, reconstructed, width, height);
-  if (mse == 0) {
-    return INFINITY;
-  }
-  double max_pixel_value = 255.0;
-  double psnr = 20.0 * std::log10(max_pixel_value / std::sqrt(mse));
-  return psnr;
-}
-
 int main(int argc, char **argv) {
 
   if (argc != 2) {
@@ -206,9 +181,6 @@ int main(int argc, char **argv) {
         cnt++;
       }
     }
-    double psnr =
-        calculate_psnr((unsigned char *)img.data, (unsigned char *)rec_img.data,
-                       rec_img.width, rec_img.height);
     stbi_write_png("output.png", img.width, img.height, 1, rec_img.data,
     img.width);
     stbi_image_free(img.data);
