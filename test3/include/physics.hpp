@@ -18,7 +18,6 @@
 #include "constants.h"
 #include "kernels.h"
 #include "spdlog/stopwatch.h"
-#include <cuda_device_runtime_api.h>
 #include <iomanip>
 #include <sstream>
 #include <string>

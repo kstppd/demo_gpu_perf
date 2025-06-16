@@ -23,8 +23,6 @@
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
-#include <cuda_runtime.h>
-#include <driver_types.h>
 #include <iostream>
 #include <stdexcept>
 #include <type_traits>

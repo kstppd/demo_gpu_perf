@@ -4,7 +4,7 @@ ifeq ($(PLATFORM), nvidia)
 	CXXFLAGS   = -std=c++20 -O3 --expt-relaxed-constexpr
 	XCOMPFLAGS = -Wall -Wextra
 	LIBS       = -lnvToolsExt -lcublas -lblas
-	TEST2_INCLUDES = -I./external/asterix/include -isystem=./external/spdlog/include/ -system=./external/stb/ 
+	TEST2_INCLUDES = -I./external/asterix/include -isystem=./external/spdlog/include/ -isystem=./external/stb/ 
 else ifeq ($(PLATFORM), amd)
 	COMPILER   = hipcc
 	CXXFLAGS   = -std=c++20 -O3 -DUSE_HIP -DSKIP_HOSTBLAS
@@ -24,7 +24,7 @@ deps:
 	if [ ! -d "external/stb" ]; then  git clone --depth 1  https://github.com/nothings/stb.git external/stb/; fi
 	if [ ! -d "external/spdlog/build/" ]; then cd external/spdlog && mkdir -p build && cd build && cmake .. && cmake --build . -j=8; fi
 
-all: deps test1 test2
+all: deps test1 test2 test3
 
 test1: deps
 	$(COMPILER) -DDRY $(CXXFLAGS) test1/main.cu -Xcompiler "$(XCOMPFLAGS)" $(INCLUDES) $(SRC) -o bench1 $(LDFLAGS) $(LIBS)
@@ -32,8 +32,14 @@ test1: deps
 test2: deps
 	$(COMPILER) $(CXXFLAGS) $(TEST2_INCLUDES) $(TEST2_LD) test2/image.cu -Xcompiler "$(XCOMPFLAGS)" $(INCLUDES) $(SRC) -o bench2 $(LDFLAGS) $(LIBS)
 	
+
 test3: deps
-	$(COMPILER) -DDRY $(CXXFLAGS) test3/eulernv.cu -Xcompiler "$(XCOMPFLAGS)" $(INCLUDES) $(SRC) -o bench3 $(LDFLAGS) $(LIBS)	
+ifeq ($(PLATFORM), amd)
+	hipify-perl --inplace test3/eulernv.cu
+	hipify-perl --inplace test3/include/*
+endif
+	$(COMPILER) -DDRY $(CXXFLAGS) $(TEST2_INCLUDES) test3/eulernv.cu -Xcompiler "$(XCOMPFLAGS)" $(INCLUDES) $(SRC) -o bench3 $(LDFLAGS) $(LIBS)
+
 	
 clean:
 	rm bench1

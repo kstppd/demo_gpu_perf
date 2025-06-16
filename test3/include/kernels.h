@@ -21,7 +21,6 @@
 #include <algorithm>
 #include <cmath>
 #include <cstddef>
-#include <cuda.h>
 #include <type_traits>
 
 

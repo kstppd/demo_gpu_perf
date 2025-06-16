@@ -31,12 +31,16 @@
 // #define USE_MORTON
 
 #ifdef PROFILE_RUN
+#ifndef USE_HIP
 #include <nvToolsExt.h>
 #define PROFILE_START(msg) nvtxRangePushA((msg))
 #define PROFILE_END() nvtxRangePop()
 #else
-#define PROFILE_START(msg)
-#define PROFILE_END()
+#include <roctx.h>
+#include <hip/hip_runtime_api.h>
+#define PROFILE_START(msg) roctxRangePush((msg))
+#define PROFILE_END() roctxRangePop()
+#endif
 #endif
 
 namespace EULERCFD {
@@ -48,9 +52,9 @@ namespace CONSTS {
 inline constexpr float GAMMA = 5.0 / 3.0;
 inline constexpr float CFL = 0.2;
 inline constexpr float DELTA = 1.0 / 128;
-inline constexpr std::size_t NX = 128;
-inline constexpr std::size_t NY = 6;
-inline constexpr std::size_t NZ = 128;
+inline constexpr std::size_t NX = 256;
+inline constexpr std::size_t NY = 128;
+inline constexpr std::size_t NZ = 256;
 inline constexpr float LX = NX * DELTA;
 inline constexpr float LY = NY * DELTA;
 inline constexpr float LZ = NZ * DELTA;
