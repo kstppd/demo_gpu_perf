@@ -6,15 +6,15 @@ ifeq ($(PLATFORM), nvidia)
 	LIBS       = -lnvToolsExt -lcublas -lblas
 else ifeq ($(PLATFORM), amd)
 	COMPILER   = hipcc
-	CXXFLAGS   = -std=c++17 -O3
+	CXXFLAGS   = -std=c++17 -O3 -DUSE_HIP -DSKIP_HOSTBLAS
 	XCOMPFLAGS = -Wall -Wextra
-	INCLUDES  += -I/opt/rocm/roctracer/include
-	LDFLAGS    = -L/opt/rocm/roctracer/lib
-	LIBS       = -lroctx64 -lhipblas -lblas  
+	INCLUDES  += -I/opt/rocm/roctracer/include -I/opt/rocm/hipblas/include
+	LDFLAGS    = -L/opt/rocm/roctracer/lib -L/opt/rocm/hipblas/lib	
+	LIBS       = -lroctx64 -lhipblas   
 else
 	$(error PLATFORM must be either 'nvidia' or 'amd')
 endif
-TEST2_INCLUDES = -I./external/asterix/include -isystem=./external/spdlog/include/spdlog -isystem=./external/stb/ 
+TEST2_INCLUDES = -I./external/asterix/include -I./external/spdlog/include/ -I./external/stb/ 
 TEST2_LD =  -L./external/spdlog/build -lspdlog  
 
 deps:

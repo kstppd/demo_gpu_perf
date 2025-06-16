@@ -22,7 +22,6 @@ USA.
 #include <chrono>
 #include <fstream>
 #include <iomanip>
-#include <nvToolsExt.h>
 #include <random>
 #include <vector>
 #define STB_IMAGE_IMPLEMENTATION
