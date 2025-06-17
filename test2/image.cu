@@ -158,7 +158,7 @@ int main(int argc, char **argv) {
         loss+=nn.loss<HW, LOSSF::MSE>(error,target,0);
         nn.backward(sample, target, 0);
         nn.update_weights_adamw(i + 1, 1e-3, 0);
-        tinyAI_gpuStreamSynchronize(0);
+        // tinyAI_gpuStreamSynchronize(0);
       }
       loss/= (nn.inputData.nrows() * nn.outputData.ncols());
       spdlog::info("Epochg {0:d} Loss {1:f}.",i,loss);

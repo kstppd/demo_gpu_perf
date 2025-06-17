@@ -3,7 +3,7 @@ ifeq ($(PLATFORM), nvidia)
 	COMPILER   = nvcc
 	CXXFLAGS   = -std=c++20 -O3 --expt-relaxed-constexpr -DSKIP_HOSTBLAS
 	XCOMPFLAGS = -Wall -Wextra
-	LIBS       = -lnvToolsExt -lcublas -lblas
+	LIBS       = -lnvToolsExt -lcublas 
 	TEST2_INCLUDES = -I./external/asterix/include -isystem=./external/spdlog/include/ -isystem=./external/stb/ 
 else ifeq ($(PLATFORM), amd)
 	COMPILER   = hipcc
