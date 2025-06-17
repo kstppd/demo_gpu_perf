@@ -9,8 +9,8 @@ else ifeq ($(PLATFORM), amd)
 	COMPILER   = hipcc
 	CXXFLAGS   = -std=c++20 -O3 -DUSE_HIP -DSKIP_HOSTBLAS
 	XCOMPFLAGS = -Wall -Wextra
-	INCLUDES  += -I/opt/rocm/roctracer/include -I/opt/rocm/hipblas/include
-	LDFLAGS    = -L/opt/rocm/roctracer/lib -L/opt/rocm/hipblas/lib	
+	INCLUDES  += -I/opt/rocm/roctracer/include -I/opt/rocm/include/roctracer/ -I/opt/rocm/include/hipblas/ -I/opt/rocm/hipblas/include -I/opt/rocm/include/hipblas/hipblas/
+	LDFLAGS    = -L/opt/rocm/roctracer/lib -L/opt/rocm/hipblas/lib	-L/opt/rocm/lib/hipblaslt/library/
 	LIBS       = -lroctx64 -lhipblas   
 	TEST2_INCLUDES = -I./external/asterix/include -I./external/spdlog/include/ -I./external/stb/ 
 else
